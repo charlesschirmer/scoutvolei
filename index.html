@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scout Vôlei</title>
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" id="meta-theme-color" content="#0f172a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{
+/* ── TEMA ESCURO (padrão) ── */
+[data-theme=dark]{
   --bg:#0f172a;--bg2:#1e293b;--bg3:#334155;
   --border:rgba(255,255,255,.1);--border2:rgba(255,255,255,.2);
   --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
@@ -19,9 +20,23 @@
   --amber:#f59e0b;--amber-bg:rgba(245,158,11,.12);--amber-t:#fcd34d;
   --sky-bg:rgba(59,130,246,.12);--sky-t:#93c5fd;
   --r:8px;--rl:12px;
+  --theme-icon:'☀';
+}
+/* ── TEMA CLARO ── */
+[data-theme=light]{
+  --bg:#f8fafc;--bg2:#ffffff;--bg3:#f1f5f9;
+  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.15);
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --blue:#2563eb;--blue-d:#1d4ed8;--blue-l:#1d4ed8;
+  --green:#16a34a;--green-bg:rgba(22,163,74,.1);--green-t:#15803d;
+  --red:#dc2626;--red-bg:rgba(220,38,38,.08);--red-t:#b91c1c;
+  --amber:#d97706;--amber-bg:rgba(217,119,6,.1);--amber-t:#92400e;
+  --sky-bg:rgba(37,99,235,.08);--sky-t:#1d4ed8;
+  --r:8px;--rl:12px;
+  --theme-icon:'🌙';
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .2s,color .2s}
 .app{max-width:680px;margin:0 auto;padding:0 12px 80px}
 .screen{display:none}.screen.active{display:block}
 
@@ -51,7 +66,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .btn-amber:hover{background:var(--amber-bg)}
 
 /* CARD */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:12px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:12px;transition:background .2s,border-color .2s}
 .card-title{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
 
 /* INPUT */
@@ -219,7 +234,10 @@ input::placeholder{color:var(--text3)}
   <div class="screen active" id="s-home">
     <div class="topbar">
       <div><div class="topbar-title">⚡ SCOUT VÔLEI</div></div>
-      <button class="btn btn-primary btn-sm" onclick="showSetupFresh()">+ Nova Partida</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-sm" id="theme-toggle-btn" onclick="toggleTheme()" title="Alternar tema" style="width:36px;padding:0;font-size:16px"></button>
+        <button class="btn btn-primary btn-sm" onclick="showSetupFresh()">+ Nova Partida</button>
+      </div>
     </div>
     <div class="home-tabs">
       <button class="home-tab active" id="htab-matches" onclick="switchHomeTab('matches')">🏆 Partidas</button>
@@ -874,7 +892,7 @@ function exportCSV(){
 }
 
 // ─────────────────────────────────────
-//  EXPORT PDF
+//  EXPORT PDF  —  tema claro / legível
 // ─────────────────────────────────────
 function exportPDF(){
   if(typeof window.jspdf==='undefined'){toast('Carregando jsPDF…');setTimeout(exportPDF,800);return}
@@ -892,110 +910,244 @@ function exportPDF(){
   const dateFmt=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const sets=[...new Set(allActions.map(a=>a.set))].sort();
   let y=0;
-  function checkPage(n=10){if(y+n>PH-16){doc.addPage();y=16}}
-  function fillRect(x,yy,w,h,r,g,b){doc.setFillColor(r,g,b);doc.rect(x,yy,w,h,'F')}
-  function hline(yy){doc.setDrawColor(30,41,59);doc.setLineWidth(0.2);doc.line(ML,yy,PW-MR,yy)}
 
-  fillRect(0,0,PW,22,15,23,42);
-  doc.setTextColor(147,197,253);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(matchName.toUpperCase(),ML,12);
-  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(148,163,184);
-  doc.text(`${teamA}  x  ${teamB}   |   ${dateFmt}`,ML,19);
-  y=28;
+  // ── paleta clara ──
+  const C={
+    navy:[30,64,175],        // azul header
+    navyLight:[239,246,255], // fundo cabeçalho tabela
+    white:[255,255,255],
+    rowAlt:[248,250,252],    // linha zebra suave
+    border:[203,213,225],    // cinza linha
+    text:[15,23,42],         // preto quase
+    textMid:[71,85,105],     // cinza médio
+    textLight:[148,163,184], // cinza claro
+    green:[22,163,74],       // verde texto/barra
+    greenBg:[240,253,244],   // verde claro fundo célula
+    red:[185,28,28],
+    redBg:[254,242,242],
+    amber:[146,64,14],
+    amberBg:[255,251,235],
+    blue:[29,78,216],
+    blueBg:[239,246,255],
+  };
 
+  function fr(x,yy,w,h,col){doc.setFillColor(col[0],col[1],col[2]);doc.rect(x,yy,w,h,'F')}
+  function sr(x,yy,w,h,col){doc.setDrawColor(col[0],col[1],col[2]);doc.setLineWidth(0.3);doc.rect(x,yy,w,h,'S')}
+  function sc(col){doc.setTextColor(col[0],col[1],col[2])}
+  function dc(col){doc.setDrawColor(col[0],col[1],col[2])}
+  function hline(yy){dc(C.border);doc.setLineWidth(0.2);doc.line(ML,yy,PW-MR,yy)}
+  function txt(t,x,yy,opts={}){doc.text(String(t),x,yy,opts)}
+  function checkPage(n=12){if(y+n>PH-14){doc.addPage();y=14}}
+
+  // ── CABEÇALHO ──────────────────────────────
+  fr(0,0,PW,26,C.navy);
+  // título
+  doc.setFont('helvetica','bold');doc.setFontSize(16);
+  doc.setTextColor(255,255,255);
+  txt('SCOUT VÔLEI',ML,11);
+  // subtítulo
+  doc.setFont('helvetica','normal');doc.setFontSize(9);
+  doc.setTextColor(186,210,255);
+  txt(matchName,ML,18);
+  // info direita
+  doc.setFontSize(8);doc.setTextColor(186,210,255);
+  txt(`${teamA}  ×  ${teamB}`,PW-MR,11,{align:'right'});
+  txt(dateFmt,PW-MR,18,{align:'right'});
+  y=32;
+
+  // ── PLACAR DOS SETS ─────────────────────────
   if(sets.length){
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(100,116,139);doc.text('PLACAR DOS SETS',ML,y);y+=5;
-    const bw=28,bh=14,gap=4;
+    doc.setFont('helvetica','bold');doc.setFontSize(8);
+    sc(C.textMid);
+    txt('PLACAR DOS SETS',ML,y);y+=4;
+    const bw=30,bh=16,gap=5;
     sets.forEach((s,i)=>{
       const sa=score.a[s-1]||0,sb=score.b[s-1]||0,win=sa>sb;
       const bx=ML+i*(bw+gap);
-      fillRect(bx,y,bw,bh,30,41,59);
-      doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);doc.text(`Set ${s}`,bx+bw/2,y+4,{align:'center'});
-      doc.setFont('helvetica','bold');doc.setFontSize(11);
-      doc.setTextColor(win?134:248,win?239:113,win?172:113);doc.text(`${sa}`,bx+9,y+11,{align:'center'});
-      doc.setTextColor(100,116,139);doc.setFontSize(10);doc.text(':',bx+bw/2,y+11,{align:'center'});
-      doc.setFont('helvetica','bold');doc.setFontSize(11);
-      doc.setTextColor(!win?134:248,!win?239:113,!win?172:113);doc.text(`${sb}`,bx+bw-9,y+11,{align:'center'});
-    });y+=bh+8;
+      fr(bx,y,bw,bh,C.white);
+      sr(bx,y,bw,bh,C.border);
+      // label set
+      doc.setFont('helvetica','normal');doc.setFontSize(7);sc(C.textLight);
+      txt(`Set ${s}`,bx+bw/2,y+4,{align:'center'});
+      // placar time A
+      doc.setFont('helvetica','bold');doc.setFontSize(13);
+      sc(win?C.green:C.red);
+      txt(sa,bx+8,y+12,{align:'center'});
+      // separador
+      doc.setFont('helvetica','normal');doc.setFontSize(10);sc(C.textLight);
+      txt(':',bx+bw/2,y+12,{align:'center'});
+      // placar adv
+      doc.setFont('helvetica','bold');doc.setFontSize(13);
+      sc(!win?C.green:C.red);
+      txt(sb,bx+bw-8,y+12,{align:'center'});
+    });
+    y+=bh+8;
   }
 
-  const nameW=44,statW=(CW-nameW)/FUNDS.length;
+  // ── TABELA DE ESTATÍSTICAS ──────────────────
+  const nameW=46,statW=(CW-nameW)/FUNDS.length;
+
   function drawTable(filtered,title){
-    checkPage(20);
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(100,116,139);doc.text(title,ML,y);y+=5;
-    fillRect(ML,y,CW,7,30,41,59);
-    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(148,163,184);
-    doc.text('Jogador',ML+2,y+4.5);
-    FUNDS.forEach((f,i)=>doc.text(f.label,ML+nameW+i*statW+statW/2,y+4.5,{align:'center'}));
-    y+=7;
-    const bp={};players.forEach(p=>{bp[p.num]={num:p.num,name:p.name}});
+    checkPage(22);
+    // título seção
+    doc.setFont('helvetica','bold');doc.setFontSize(9);sc(C.navy);
+    txt(title,ML,y);
+    dc(C.navy);doc.setLineWidth(0.5);
+    doc.line(ML,y+1,ML+doc.getTextWidth(title),y+1);
+    y+=6;
+
+    // cabeçalho tabela
+    fr(ML,y,CW,8,C.navyLight);
+    sr(ML,y,CW,8,C.border);
+    doc.setFont('helvetica','bold');doc.setFontSize(7.5);sc(C.navy);
+    txt('Jogador',ML+3,y+5.5);
+    FUNDS.forEach((f,i)=>txt(f.label,ML+nameW+i*statW+statW/2,y+5.5,{align:'center'}));
+    y+=8;
+
+    const bp={};
+    players.forEach(p=>{bp[p.num]={num:p.num,name:p.name}});
     filtered.forEach(a=>{if(!bp[a.playerNum])bp[a.playerNum]={num:a.playerNum,name:a.playerName}});
+
     Object.values(bp).forEach((p,pi)=>{
       checkPage(10);
-      if(pi%2===0)fillRect(ML,y,CW,8,15,23,42);
-      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(147,197,253);doc.text(`#${p.num}`,ML+2,y+5.5);
-      doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(148,163,184);doc.text(p.name,ML+10,y+5.5);
+      const rowH=9;
+      // zebra
+      if(pi%2===1)fr(ML,y,CW,rowH,C.rowAlt);
+      // borda linha
+      dc(C.border);doc.setLineWidth(0.15);
+      doc.line(ML,y+rowH,PW-MR,y+rowH);
+
+      // número jogador
+      doc.setFont('helvetica','bold');doc.setFontSize(8.5);sc(C.navy);
+      txt(`#${p.num}`,ML+3,y+6);
+      // nome
+      doc.setFont('helvetica','normal');doc.setFontSize(8);sc(C.textMid);
+      const nameMax=nameW-14;
+      const nameTxt=doc.getTextWidth(p.name)>nameMax?doc.splitTextToSize(p.name,nameMax)[0]+'…':p.name;
+      txt(nameTxt,ML+13,y+6);
+
       FUNDS.forEach((f,i)=>{
         const acts=filtered.filter(a=>a.playerNum===p.num&&a.fundId===f.id);
         const cx=ML+nameW+i*statW+statW/2;
-        if(!acts.length){doc.setTextColor(100,116,139);doc.setFontSize(7);doc.text('—',cx,y+5.5,{align:'center'});return}
+        if(!acts.length){
+          doc.setFont('helvetica','normal');doc.setFontSize(8);sc(C.textLight);
+          txt('—',cx,y+6,{align:'center'});return;
+        }
         const pts=acts.filter(a=>a.cls==='pt').length,eff=Math.round((pts/acts.length)*100);
-        const[tr,tg,tb]=eff>=70?[134,239,172]:eff>=40?[147,197,253]:[252,165,165];
-        doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(tr,tg,tb);doc.text(`${pts}/${acts.length}`,cx,y+4,{align:'center'});
-        doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(100,116,139);doc.text(`${eff}%`,cx,y+7,{align:'center'});
+        const[tc,bg]=eff>=70?[C.green,C.greenBg]:eff>=40?[C.blue,C.blueBg]:[C.red,C.redBg];
+        // fundo célula colorido
+        fr(ML+nameW+i*statW+1,y+1,statW-2,rowH-2,bg);
+        // pts/total
+        doc.setFont('helvetica','bold');doc.setFontSize(8);sc(tc);
+        txt(`${pts}/${acts.length}`,cx,y+5.5,{align:'center'});
+        // percentual
+        doc.setFont('helvetica','normal');doc.setFontSize(7);sc(tc);
+        txt(`${eff}%`,cx,y+8.5,{align:'center'});
       });
-      y+=8;hline(y);
-    });y+=6;
+      y+=rowH;
+    });
+    // borda externa tabela
+    dc(C.border);doc.setLineWidth(0.3);
+    doc.rect(ML,y-Object.values(bp).length*9-8,CW,Object.values(bp).length*9+8,'S');
+    y+=6;
   }
 
   drawTable(allActions,'ESTATÍSTICAS GERAIS');
   sets.forEach(s=>drawTable(allActions.filter(a=>a.set===s),`ESTATÍSTICAS — SET ${s}`));
 
+  // ── EFICIÊNCIA POR FUNDAMENTO ───────────────
   checkPage(20);
-  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(100,116,139);doc.text('EFICIÊNCIA POR FUNDAMENTO',ML,y);y+=6;
+  doc.setFont('helvetica','bold');doc.setFontSize(9);sc(C.navy);
+  txt('EFICIÊNCIA POR FUNDAMENTO',ML,y);
+  dc(C.navy);doc.setLineWidth(0.5);
+  doc.line(ML,y+1,ML+doc.getTextWidth('EFICIÊNCIA POR FUNDAMENTO'),y+1);
+  y+=7;
+
   FUNDS.forEach(f=>{
     const acts=allActions.filter(a=>a.fundId===f.id);if(!acts.length)return;
-    checkPage(8);
+    checkPage(9);
     const pts=acts.filter(a=>a.cls==='pt').length,eff=Math.round((pts/acts.length)*100);
-    const[cr,cg,cb]=eff>=70?[34,197,94]:eff>=40?[59,130,246]:[239,68,68];
-    const barW=Math.round((CW-60)*eff/100);
-    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(148,163,184);doc.text(f.label,ML,y+3.5);
-    fillRect(ML+42,y,CW-60,5,30,41,59);
-    if(barW>0)fillRect(ML+42,y,barW,5,cr,cg,cb);
-    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(cr,cg,cb);doc.text(`${eff}%`,ML+42+CW-58+2,y+3.5);
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);doc.text(`${acts.length} ações`,PW-MR,y+3.5,{align:'right'});
-    y+=8;
-  });y+=4;
+    const[tc,bc]=eff>=70?[C.green,[187,247,208]]:eff>=40?[C.blue,[186,230,253]]:[C.red,[254,202,202]];
+    const barMax=CW-62,barW=Math.round(barMax*eff/100);
 
+    // label
+    doc.setFont('helvetica','normal');doc.setFontSize(8.5);sc(C.text);
+    txt(f.label,ML,y+4);
+    // trilha
+    fr(ML+44,y,barMax,5,C.rowAlt);
+    sr(ML+44,y,barMax,5,C.border);
+    // barra preenchida
+    if(barW>0)fr(ML+44,y,barW,5,bc);
+    // percentual
+    doc.setFont('helvetica','bold');doc.setFontSize(8.5);sc(tc);
+    txt(`${eff}%`,ML+44+barMax+3,y+4);
+    // total ações
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);sc(C.textLight);
+    txt(`${acts.length} ações`,PW-MR,y+4,{align:'right'});
+    y+=9;
+  });
+  y+=4;
+
+  // ── HISTÓRICO DE AÇÕES ──────────────────────
   checkPage(20);
-  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(100,116,139);doc.text('HISTÓRICO DE AÇÕES',ML,y);y+=5;
-  const logW=[12,14,38,28,40,14];
-  fillRect(ML,y,CW,7,30,41,59);
-  doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(148,163,184);
-  let lx=ML;['Set','Jog.','Nome','Fundamento','Resultado','Cat.'].forEach((c,i)=>{doc.text(c,lx+1,y+4.5);lx+=logW[i]});
+  doc.setFont('helvetica','bold');doc.setFontSize(9);sc(C.navy);
+  txt('HISTÓRICO DE AÇÕES',ML,y);
+  dc(C.navy);doc.setLineWidth(0.5);
+  doc.line(ML,y+1,ML+doc.getTextWidth('HISTÓRICO DE AÇÕES'),y+1);
+  y+=6;
+
+  const logW=[12,14,42,28,42,10];
+  fr(ML,y,CW,7,C.navyLight);
+  sr(ML,y,CW,7,C.border);
+  doc.setFont('helvetica','bold');doc.setFontSize(7.5);sc(C.navy);
+  let lx=ML;
+  ['Set','Jog.','Nome','Fundamento','Resultado','Cat.'].forEach((c,i)=>{txt(c,lx+2,y+5);lx+=logW[i]});
   y+=7;
-  const clsColor={pt:[134,239,172],neu:[147,197,253],warn:[252,211,77],err:[252,165,165]};
+
+  const clsLabel={pt:'Ponto',neu:'Neutro',warn:'Atenção',err:'Erro'};
+  const clsTc={pt:C.green,neu:C.blue,warn:C.amber,err:C.red};
+  const clsBg={pt:C.greenBg,neu:C.blueBg,warn:C.amberBg,err:C.redBg};
+
   [...allActions].reverse().forEach((a,ai)=>{
     checkPage(7);
-    if(ai%2===0)fillRect(ML,y,CW,6,15,23,42);
-    doc.setFont('helvetica','normal');doc.setFontSize(7);
+    const rowH=6.5;
+    if(ai%2===1)fr(ML,y,CW,rowH,C.rowAlt);
+    dc(C.border);doc.setLineWidth(0.12);
+    doc.line(ML,y+rowH,PW-MR,y+rowH);
+
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);
     lx=ML;
-    [`S${a.set}`,`#${a.playerNum}`,a.playerName,a.fundLabel,a.outcomeLabel,a.cls].forEach((v,i)=>{
-      const[tr,tg,tb]=i===5?clsColor[a.cls]||[148,163,184]:[148,163,184];
-      doc.setTextColor(tr,tg,tb);
-      const maxW=logW[i]-2,txt=doc.getTextWidth(v)>maxW?doc.splitTextToSize(v,maxW)[0]+'…':v;
-      doc.text(txt,lx+1,y+4);lx+=logW[i];
+    const vals=[`S${a.set}`,`#${a.playerNum}`,a.playerName,a.fundLabel,a.outcomeLabel,clsLabel[a.cls]||a.cls];
+    vals.forEach((v,i)=>{
+      if(i===5){
+        // badge colorido para categoria
+        const bg=clsBg[a.cls]||C.rowAlt,tc=clsTc[a.cls]||C.textMid;
+        fr(lx,y+0.5,logW[i]-1,rowH-1,bg);
+        doc.setFont('helvetica','bold');doc.setFontSize(6.5);sc(tc);
+        txt(v,lx+logW[i]/2,y+4.5,{align:'center'});
+      } else {
+        doc.setFont('helvetica','normal');doc.setFontSize(7.5);
+        sc(i===1?C.navy:C.text);
+        const mw=logW[i]-3,tv=doc.getTextWidth(v)>mw?doc.splitTextToSize(v,mw)[0]+'…':v;
+        txt(tv,lx+2,y+4.5);
+      }
+      lx+=logW[i];
     });
-    y+=6;
+    y+=rowH;
   });
 
+  // ── RODAPÉ ──────────────────────────────────
   const total=doc.internal.getNumberOfPages();
   for(let p=1;p<=total;p++){
     doc.setPage(p);
-    fillRect(0,PH-8,PW,8,15,23,42);
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);
-    doc.text(`Scout Vôlei  |  ${matchName}  |  ${teamA} × ${teamB}  |  ${dateFmt}`,ML,PH-3);
-    doc.text(`${p} / ${total}`,PW-MR,PH-3,{align:'right'});
+    fr(0,PH-9,PW,9,C.navyLight);
+    dc(C.border);doc.setLineWidth(0.3);
+    doc.line(0,PH-9,PW,PH-9);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);sc(C.textMid);
+    txt(`Scout Vôlei  ·  ${matchName}  ·  ${teamA} × ${teamB}  ·  ${dateFmt}`,ML,PH-4);
+    txt(`${p} / ${total}`,PW-MR,PH-4,{align:'right'});
   }
+
   doc.save(`scout_${matchName}_${new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')}.pdf`);
   toast('PDF gerado!');
 }
@@ -1017,6 +1169,27 @@ let lastTap=0;
 document.addEventListener('touchend',e=>{
   const now=Date.now();if(now-lastTap<300)e.preventDefault();lastTap=now;
 },{passive:false});
+
+// ─────────────────────────────────────
+//  THEME
+// ─────────────────────────────────────
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme',theme);
+  localStorage.setItem('sv_theme',theme);
+  const btn=document.getElementById('theme-toggle-btn');
+  if(btn)btn.textContent=theme==='dark'?'☀️':'🌙';
+  const meta=document.getElementById('meta-theme-color');
+  if(meta)meta.content=theme==='dark'?'#0f172a':'#f8fafc';
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme')||'dark';
+  applyTheme(cur==='dark'?'light':'dark');
+}
+// load saved theme on boot
+(function(){
+  const saved=localStorage.getItem('sv_theme')||'dark';
+  applyTheme(saved);
+})();
 
 // ─────────────────────────────────────
 //  KEYBOARD
