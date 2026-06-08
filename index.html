@@ -820,7 +820,7 @@ function renderScout(){
   updateScore();renderPlayerGrid();renderFundTabs();renderOutcomes();renderLog();
 }
 function renderPlayerGrid(){
-  document.getElementById('player-grid').innerHTML=S.players.map(p=>`
+  document.getElementById('player-grid').innerHTML=[...S.players].sort((a,b)=>+a.num-+b.num).map(p=>`
     <div class="p-card${S.selPlayer===p.num?' selected':''}" id="pc-${p.num}" onclick="selPlayer('${p.num}')">
       <div class="pnum">${p.num}</div><div class="pname">${p.name}</div></div>`).join('');
 }
@@ -1965,7 +1965,7 @@ function sqFilteredServes(){
 
 // ── RENDER ────────────────────────────────────────────────
 function renderSaquePlayerGrid(){
-  document.getElementById('saque-player-grid').innerHTML = S.players.map(p => `
+  document.getElementById('saque-player-grid').innerHTML = [...S.players].sort((a,b)=>+a.num-+b.num).map(p => `
     <div class="saque-p-card${SQ.selPlayer===p.num?' selected':''}" onclick="setSaquePlayer('${p.num}')">
       <div class="spnum">${p.num}</div>
       <div class="spname">${p.name}</div>
