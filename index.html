@@ -1248,7 +1248,8 @@ function exportPDF(){
   // ── MAPA DE CALOR DOS SAQUES ────────────────
   const allServes = SQ.serves;
   if(allServes.length > 0){
-    checkPage(20);
+    doc.addPage();
+    y = 16;
     doc.setFont('helvetica','bold');doc.setFontSize(9);sc(C.navy);
     txt('MAPA DE CALOR — SAQUES',ML,y);
     dc(C.navy);doc.setLineWidth(0.5);
