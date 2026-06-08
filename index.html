@@ -525,7 +525,7 @@ input::placeholder{color:var(--text3)}
 //  CONSTANTES
 // ─────────────────────────────────────
 const FUNDS=[
-  {id:'saque',label:'Saque',icon:'🏐',outcomes:[{id:'ace',label:'Ace',cls:'pt',icon:'🎯'},{id:'err',label:'Erro',cls:'err',icon:'✗'},{id:'jogo',label:'Em jogo',cls:'neu',icon:'↗'}]},
+  {id:'saque',label:'Saque',icon:'🏐',outcomes:[{id:'ace',label:'Ace',cls:'pt',icon:'🎯'},{id:'err',label:'Erro',cls:'err',icon:'✗'},{id:'jogo',label:'Em jogo',cls:'pt',icon:'↗'}]},
   {id:'recepcao',label:'Recepção',icon:'🤲',outcomes:[{id:'A',label:'A — Perfeita',cls:'pt',icon:'A'},{id:'B',label:'B — Boa',cls:'neu',icon:'B'},{id:'C',label:'C — Ruim',cls:'warn',icon:'C'},{id:'D',label:'D — Erro',cls:'err',icon:'D'}]},
   {id:'ataque',label:'Ataque',icon:'💥',outcomes:[{id:'ponto',label:'Ponto',cls:'pt',icon:'💥'},{id:'err',label:'Erro',cls:'err',icon:'✗'},{id:'bloq',label:'Bloqueado',cls:'warn',icon:'✋'},{id:'def',label:'Defendido',cls:'neu',icon:'🛡'}]},
   {id:'bloqueio',label:'Bloqueio',icon:'✋',outcomes:[{id:'ponto',label:'Ponto',cls:'pt',icon:'🎯'},{id:'toque',label:'Toque',cls:'neu',icon:'👆'},{id:'err',label:'Erro',cls:'err',icon:'✗'}]},
@@ -806,6 +806,8 @@ function startMatch(){
   S.teamB=document.getElementById('team-b').value.trim()||'Adversário';
   if(!S.players.length){toast('Adicione ao menos um jogador');return}
   S.statsReadOnly=false;
+  // zera análise de saques da partida anterior
+  SQ.serves=[];SQ.selPlayer=null;SQ.flipped=false;SQ.heatPlayer='all';SQ.drag=null;
   show('s-scout');renderScout();
 }
 
