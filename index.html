@@ -219,6 +219,53 @@ input::placeholder{color:var(--text3)}
 .badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:10px;font-weight:500}
 .badge-blue{background:var(--sky-bg);color:var(--sky-t);border:1px solid rgba(59,130,246,.3)}
 .badge-green{background:var(--green-bg);color:var(--green-t);border:1px solid rgba(34,197,94,.3)}
+
+/* ── MÓDULO SAQUE ─────────────────────────── */
+#s-saque{
+  display:flex;flex-direction:column;
+  height:100dvh;height:100vh; /* fallback */
+  overflow:hidden;
+  padding-bottom:0;
+}
+#s-saque .topbar{flex-shrink:0;margin-bottom:0}
+#s-saque .home-tabs{flex-shrink:0;margin-bottom:0}
+#saque-reg{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:0 0 6px}
+#saque-heat{flex:1;display:flex;flex-direction:column;overflow-y:auto;padding:0 0 8px}
+.saque-controls-bar{flex-shrink:0;display:flex;gap:6px;padding:6px 0 4px;align-items:center}
+.saque-court-wrap{position:relative;width:100%;touch-action:none;user-select:none;-webkit-user-select:none;flex:1;min-height:0;display:flex;align-items:stretch}
+#court-canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none;object-fit:contain}
+
+.saque-controls{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.saque-player-grid{display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;padding:4px 0;margin-bottom:0;flex-shrink:0}
+.saque-player-grid::-webkit-scrollbar{height:2px}
+.saque-p-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:5px 4px;text-align:center;cursor:pointer;transition:all .15s;flex-shrink:0;min-width:54px}
+.saque-p-card:hover{border-color:var(--border2)}
+.saque-p-card.selected{border-color:var(--blue);border-width:1.5px;background:var(--sky-bg)}
+.saque-p-card .spnum{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--blue-l);line-height:1}
+.saque-p-card .spname{font-size:8px;color:var(--text3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:52px}
+.result-tabs{display:flex;gap:6px;margin-bottom:0}
+.result-tab{flex:1;height:38px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:600}
+.result-tab:hover{background:var(--bg2)}
+.result-tab.ace{border-color:rgba(34,197,94,.5);color:var(--green-t)}
+.result-tab.ace.active{background:var(--green-bg);border-color:var(--green)}
+.result-tab.jogo{border-color:rgba(59,130,246,.5);color:var(--sky-t)}
+.result-tab.jogo.active{background:var(--sky-bg);border-color:var(--blue)}
+.result-tab.err{border-color:rgba(239,68,68,.5);color:var(--red-t)}
+.result-tab.err.active{background:var(--red-bg);border-color:var(--red)}
+.saque-log{border:1px solid var(--border);border-radius:var(--r);max-height:90px;overflow-y:auto;flex-shrink:0}
+.saque-log-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid var(--border);font-size:12px}
+.saque-log-item:last-child{border-bottom:none}
+.heat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.heat-tab{padding:4px 12px;border-radius:20px;border:1px solid var(--border);font-size:12px;cursor:pointer;background:transparent;color:var(--text2);font-family:inherit;transition:all .15s}
+.heat-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:500}
+.heat-tab:hover:not(.active){border-color:var(--border2);color:var(--text)}
+#heatmap-canvas{display:block;width:100%;border-radius:var(--r)}
+.saque-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text2);margin-top:8px}
+.saque-legend span{display:flex;align-items:center;gap:4px}
+.saque-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.saque-stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.saque-stat-row:last-child{border-bottom:none}
+.saque-stat-val{font-weight:600;color:var(--blue-l)}
 ::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:2px}
 @media(max-width:480px){.outcome-grid{grid-template-columns:repeat(2,1fr)}.player-grid{grid-template-columns:repeat(auto-fill,minmax(75px,1fr))}}
 .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:8px 18px;font-size:12px;color:var(--text);opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:99}
@@ -298,6 +345,7 @@ input::placeholder{color:var(--text3)}
         <div class="topbar-sub" id="hdr-sub">Set 1</div>
       </div>
       <div class="topbar-actions">
+        <button class="btn btn-sm" onclick="showSaqueScreen()">🏐 Saques</button>
         <button class="btn btn-sm" onclick="showStats(false)">📊 Stats</button>
         <button class="btn btn-sm btn-danger" onclick="nextSet()">Set +1</button>
         <button class="btn btn-sm btn-amber" onclick="openEndModal()" title="Encerrar partida">🏁</button>
@@ -381,6 +429,67 @@ input::placeholder{color:var(--text3)}
     </div>
   </div>
 </div>
+
+
+  <!-- ======= SAQUES ======= -->
+  <div class="screen" id="s-saque">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Análise de Saques</div>
+        <div class="topbar-sub" id="saque-sub">Partida</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm" id="btn-flip-court" onclick="flipCourt()" title="Inverter lado que saca">⇄ Inverter</button>
+        <button class="btn btn-sm" onclick="show('s-scout');renderScout()">← Scout</button>
+      </div>
+    </div>
+
+    <!-- tabs: registrar / mapa de calor -->
+    <div class="home-tabs" style="margin-top:-8px">
+      <button class="home-tab active" id="stab-reg" onclick="switchSaqueTab('reg')">🎯 Registrar</button>
+      <button class="home-tab" id="stab-heat" onclick="switchSaqueTab('heat')">🌡 Mapa de Calor</button>
+    </div>
+
+    <!-- ── ABA REGISTRAR ── -->
+    <div id="saque-reg">
+      <!-- linha de controles: sacadores + resultado numa barra só -->
+      <div style="flex-shrink:0">
+        <div class="saque-player-grid" id="saque-player-grid" style="margin-bottom:6px"></div>
+        <div style="display:flex;gap:6px">
+          <button class="result-tab ace" id="rt-ace" onclick="setSaqueResult('ace')">🎯 Ace</button>
+          <button class="result-tab jogo" id="rt-jogo" onclick="setSaqueResult('jogo')">↗ Em jogo</button>
+          <button class="result-tab err" id="rt-err" onclick="setSaqueResult('err')">✗ Erro/Rede</button>
+        </div>
+      </div>
+
+      <!-- canvas das quadras — ocupa todo espaço restante -->
+      <div class="saque-court-wrap">
+        <canvas id="court-canvas"></canvas>
+      </div>
+
+      <!-- contador flutuante (invisível, só para JS) -->
+      <span id="saque-count" style="display:none">0</span>
+      <div id="saque-log" style="display:none"></div>
+    </div>
+
+    <!-- ── ABA MAPA DE CALOR ── -->
+    <div id="saque-heat" style="display:none">
+      <div class="heat-tabs" id="heat-player-tabs"></div>
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text3)">Destino dos saques · vermelho = concentração alta</div>
+      <div class="saque-court-wrap">
+        <canvas id="heatmap-canvas"></canvas>
+      </div>
+      <div class="saque-legend">
+        <span><span class="saque-legend-dot" style="background:#22c55e"></span>Ace</span>
+        <span><span class="saque-legend-dot" style="background:#3b82f6"></span>Em jogo</span>
+        <span><span class="saque-legend-dot" style="background:#ef4444"></span>Erro/Rede</span>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-title" id="heat-stats-title">Estatísticas</div>
+        <div id="heat-stats-body"></div>
+      </div>
+    </div>
+  </div>
 
 <!-- MODAL: VER TIME -->
 <div class="modal-overlay" id="modal-view-team" style="display:none">
@@ -1202,6 +1311,821 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('nt-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('nt-num').focus()});
   renderMatchesList();
 });
+
+// ═══════════════════════════════════════
+//  MÓDULO ANÁLISE DE SAQUES
+// ═══════════════════════════════════════
+let SQ = {
+  selPlayer: null,
+  result: 'jogo',        // ace | jogo | err
+  serves: [],            // [{playerNum,playerName,ox,oy,dx,dy,result,set}]
+  drag: null,            // {ox,oy} canvas coords during drag
+  heatPlayer: 'all',
+  flipped: false,        // true = adversário saca (quadras invertidas)
+};
+
+// ── cores por resultado ──
+const SQ_COLORS = {
+  ace:  {stroke:'#22c55e', fill:'rgba(34,197,94,.18)',  dot:'#22c55e'},
+  jogo: {stroke:'#3b82f6', fill:'rgba(59,130,246,.18)', dot:'#3b82f6'},
+  err:  {stroke:'#ef4444', fill:'rgba(239,68,68,.18)',  dot:'#ef4444'},
+};
+
+// ── constantes de layout da quadra (em proporção do canvas) ──
+// Canvas: largura total. Mostra 2 quadras lado a lado + linha central.
+// Quadra oficial vôlei: 18m x 9m. Cada metade: 9m x 9m (quadrado).
+// Layout VERTICAL: [labelA] [quadra A] [rede] [quadra B] [labelB]
+// Vôlei: quadra 18x9m → cada metade 9x9m (quadrado)
+// Canvas: largura = W, altura = W * (18/9 + margens) ≈ W * 2.2
+const CQ = {
+  mx: 0.05,    // margem lateral (proporção da largura)
+  my: 0.03,    // margem top/bottom
+  gap: 0.04,   // altura da rede (proporção da largura)
+  labelH: 0.06,// altura reservada para labels (proporção da largura)
+};
+
+function sqCanvasMetrics(canvas){
+  // Layout HORIZONTAL com margens para "fora"
+  // Quadra ocupa ~70% da largura e ~72% da altura → bordas viram área "fora"
+  const W = canvas.width, H = canvas.height;
+  const lh   = Math.round(H * 0.11);  // altura do label (acima da quadra)
+  const myT  = Math.round(H * 0.14);  // margem top (label + área fora)
+  const myB  = Math.round(H * 0.16);  // margem bottom (área fora, um pouco maior)
+  const my   = myT;                   // alias para compatibilidade
+  const mx   = Math.round(W * 0.07);  // margem lateral (área fora)
+  const gap  = Math.round(W * 0.045); // largura da rede
+  const courtH = H - myT - myB;
+  const courtW = Math.round((W - 2*mx - gap) / 2);
+  // Quadra A = sacador (ESQUERDA)
+  const aX = mx,            aY = myT, aW = courtW, aH = courtH;
+  // Rede (vertical, centro)
+  const netX = mx+courtW,   netY = myT, netW = gap, netH = courtH;
+  // Quadra B = adversário (DIREITA)
+  const bX = mx+courtW+gap, bY = myT, bW = courtW, bH = courtH;
+  return {W,H,mx,my,myT,myB,gap,lh,courtW,courtH,aX,aY,aW,aH,netX,netY,netW,netH,bX,bY,bW,bH};
+}
+
+function sqCanvasPoint(canvas, clientX, clientY){
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return {
+    x: (clientX - rect.left) * scaleX,
+    y: (clientY - rect.top)  * scaleY,
+  };
+}
+
+// normaliza ponto da quadra A (origem) para 0..1 relativo à quadra A
+// normaliza origem: se flipped, meu time saca da quadra B (direita)
+function sqNormOrigin(canvas, px, py){
+  const m = sqCanvasMetrics(canvas);
+  // flipped: origem é quadra B (direita)
+  const ox = SQ.flipped ? m.bX : m.aX;
+  const ow = SQ.flipped ? m.bW : m.aW;
+  const oy = SQ.flipped ? m.bY : m.aY;
+  const oh = SQ.flipped ? m.bH : m.aH;
+  return {
+    nx: (px - ox) / ow,
+    ny: (py - oy) / oh,
+  };
+}
+// normaliza destino: se flipped, destino é quadra A (esquerda)
+function sqNormDest(canvas, px, py){
+  const m = sqCanvasMetrics(canvas);
+  // flipped: destino é quadra A (esquerda)
+  const dx = SQ.flipped ? m.aX : m.bX;
+  const dw = SQ.flipped ? m.aW : m.bW;
+  const dy2= SQ.flipped ? m.aY : m.bY;
+  const dh = SQ.flipped ? m.aH : m.bH;
+  const nx = (px - dx) / dw;
+  const ny = (py - dy2) / dh;
+  const inCourt = nx >= 0 && nx <= 1 && ny >= 0 && ny <= 1;
+  return {nx, ny, inCourt};
+}
+
+// desnormaliza para canvas
+function sqDenormOrigin(canvas, nx, ny){
+  const m = sqCanvasMetrics(canvas);
+  // usa o lado de origem salvo no saque, mas re-renderiza sempre da perspectiva atual
+  // Para consistência: origem sempre guardada relativa ao lado de onde saiu
+  // Se o saque foi feito com flipped=true, origem estava na quadra B
+  // Mas como renderizamos todos os saques no canvas atual, usamos sempre quadra A
+  // (a normalização já foi feita corretamente no momento do registro)
+  return {x: m.aX + nx*m.aW, y: m.aY + ny*m.aH};
+}
+function sqDenormDest(canvas, nx, ny){
+  const m = sqCanvasMetrics(canvas);
+  return {x: m.bX + nx*m.bW, y: m.bY + ny*m.bH};
+}
+
+// ── DESENHA A QUADRA (layout vertical) ───────────────────
+function drawCourt(canvas, serves, drag){
+  const ctx = canvas.getContext('2d');
+  const m = sqCanvasMetrics(canvas);
+  const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+  ctx.clearRect(0, 0, m.W, m.H);
+  const bgColor     = dark ? '#0f172a' : '#f0f9ff';
+  const courtColor  = dark ? '#1a3a5c' : '#dbeafe';
+  const lineColor   = dark ? '#60a5fa' : '#2563eb';
+  const lineAlpha   = dark ? 0.85 : 0.9;
+  const netColor    = dark ? '#f59e0b' : '#d97706';
+  const labelColor  = dark ? '#94a3b8' : '#475569';
+  const atkColor    = dark ? 'rgba(96,165,250,.55)' : 'rgba(37,99,235,.45)';
+  const midColor    = dark ? 'rgba(96,165,250,.2)'  : 'rgba(37,99,235,.15)';
+
+  // ── fundo geral = área "fora" (fora da quadra) ──
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, m.W, m.H);
+
+  // área fora: hachurado leve + label
+  const outColor = dark ? 'rgba(239,68,68,.06)' : 'rgba(220,38,38,.05)';
+  const outBorder = dark ? 'rgba(239,68,68,.18)' : 'rgba(220,38,38,.15)';
+  const outText   = dark ? 'rgba(239,68,68,.35)' : 'rgba(185,28,28,.3)';
+
+  // fundo vermelho bem suave
+  ctx.fillStyle = outColor;
+  ctx.fillRect(0, 0, m.W, m.H);
+
+  // borda pontilhada ao redor de toda a área utilizável
+  ctx.strokeStyle = outBorder;
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.strokeRect(2, 2, m.W-4, m.H-4);
+  ctx.setLineDash([]);
+
+  // label FORA nos 4 cantos
+  ctx.fillStyle = outText;
+  ctx.font = `bold ${Math.max(8, m.mx*0.28)}px Inter, sans-serif`;
+  ctx.textAlign = 'center';
+  const fo = 'FORA';
+  ctx.fillText(fo, m.mx/2, m.H/2);               // esquerda
+  ctx.fillText(fo, m.W - m.mx/2, m.H/2);          // direita
+  ctx.fillText(fo, m.W/2, m.my*0.58);              // topo
+  ctx.fillText(fo, m.W/2, m.H - (m.myB||m.my)*0.18);  // baixo
+
+  // ── helper: metade da quadra horizontal ──
+  // isLeft=true → quadra A (sacador, esquerda); isLeft=false → quadra B (adversário, direita)
+  function drawHalf(x, y, w, h, label, isLeft){
+    // fundo
+    ctx.fillStyle = courtColor;
+    ctx.fillRect(x, y, w, h);
+
+    // borda
+    ctx.strokeStyle = lineColor;
+    ctx.globalAlpha = lineAlpha;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, w, h);
+    ctx.globalAlpha = 1;
+
+    // linha dos 3m (vertical dentro de cada metade)
+    // 3m da rede = 1/3 da largura de cada metade a partir da rede
+    // isLeft: rede à direita → linha 3m em x + w*(2/3)
+    // isRight: rede à esquerda → linha 3m em x + w*(1/3)
+    const atkX = isLeft ? x + w*(2/3) : x + w*(1/3);
+    ctx.strokeStyle = atkColor;
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath(); ctx.moveTo(atkX, y); ctx.lineTo(atkX, y+h); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // label "3m"
+    const fs3m = Math.max(7, Math.min(10, h*0.07));
+    ctx.fillStyle = atkColor;
+    ctx.font = `${fs3m}px Inter, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText('3m', atkX, y + 9);
+
+    // linhas de zona horizontal (divide a quadra em 3 faixas: 1,6 / 2,5 / 3,4)
+    [1,2].forEach(i => {
+      ctx.strokeStyle = midColor;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(x, y + h*(i/3));
+      ctx.lineTo(x+w, y + h*(i/3));
+      ctx.stroke();
+    });
+
+    // linha central vertical (meio da quadra, muito fraca)
+    ctx.strokeStyle = midColor;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(x+w/2, y); ctx.lineTo(x+w/2, y+h); ctx.stroke();
+
+    // label do time (acima da quadra)
+    const fsLabel = Math.max(9, Math.min(13, m.lh*0.52));
+    ctx.fillStyle = labelColor;
+    ctx.font = `bold ${fsLabel}px Inter, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(label, x + w/2, y - 4);
+  }
+
+  // flipped: meu time troca de lado (direita), adversário fica na esquerda
+  // meu time SEMPRE saca — só muda de qual lado
+  const myTeam = S.teamA||'Seu Time';
+  const advTeam= S.teamB||'Adversário';
+  const lA = SQ.flipped ? advTeam             : myTeam + ' ← SACA';
+  const lB = SQ.flipped ? myTeam + ' SACA →' : advTeam;
+  drawHalf(m.aX, m.aY, m.aW, m.aH, lA, true);
+  drawHalf(m.bX, m.bY, m.bW, m.bH, lB, false);
+
+  // ── REDE (vertical, centro) ──
+  ctx.fillStyle = netColor;
+  ctx.globalAlpha = 0.85;
+  ctx.fillRect(m.netX, m.netY, m.netW, m.netH);
+  ctx.globalAlpha = 1;
+
+  // malha horizontal da rede
+  ctx.strokeStyle = netColor;
+  ctx.lineWidth = 0.6;
+  const rows = 10;
+  for(let i=0; i<=rows; i++){
+    const ry = m.netY + (m.netH/rows)*i;
+    ctx.globalAlpha = 0.3;
+    ctx.beginPath(); ctx.moveTo(m.netX, ry); ctx.lineTo(m.netX+m.netW, ry); ctx.stroke();
+  }
+  // linha vertical central da rede
+  ctx.globalAlpha = 0.85;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(m.netX + m.netW/2, m.netY);
+  ctx.lineTo(m.netX + m.netW/2, m.netY + m.netH);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+
+  // label REDE (rotacionado 90°)
+  ctx.save();
+  ctx.translate(m.netX + m.netW/2, m.netY + m.netH/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillStyle = netColor;
+  ctx.font = `bold ${Math.max(7, Math.min(11, m.netW*1.8))}px Inter, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('REDE', 0, 4);
+  ctx.restore();
+
+  // ── desenha saques salvos ──
+  serves.forEach(sv => {
+    // se o saque foi feito com flipped, origem era B e destino era A
+    const o = sv.flipped
+      ? {x: m.bX + sv.ox*m.bW, y: m.bY + sv.oy*m.bH}
+      : {x: m.aX + sv.ox*m.aW, y: m.aY + sv.oy*m.aH};
+    const d = sv.flipped
+      ? {x: m.aX + sv.dx*m.aW, y: m.aY + sv.dy*m.aH}
+      : {x: m.bX + sv.dx*m.bW, y: m.bY + sv.dy*m.bH};
+    const col = SQ_COLORS[sv.result] || SQ_COLORS.jogo;
+    const outOfCourt = sv.dx < 0 || sv.dx > 1 || sv.dy < 0 || sv.dy > 1;
+
+    // linha da trajetória
+    ctx.beginPath();
+    ctx.moveTo(o.x, o.y);
+    ctx.lineTo(d.x, d.y);
+    ctx.strokeStyle = col.stroke;
+    ctx.globalAlpha = outOfCourt ? 0.35 : 0.55;
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash(outOfCourt ? [4,3] : []);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+
+    // ponto de origem
+    ctx.beginPath();
+    ctx.arc(o.x, o.y, 4, 0, Math.PI*2);
+    ctx.fillStyle = col.dot;
+    ctx.globalAlpha = 0.9;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // ponto de destino
+    if(!outOfCourt){
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, 5, 0, Math.PI*2);
+      ctx.fillStyle = col.fill;
+      ctx.strokeStyle = col.stroke;
+      ctx.lineWidth = 1.5;
+      ctx.fill();
+      ctx.stroke();
+    } else {
+      // X vermelho fora da quadra
+      const r = 5;
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.75;
+      ctx.beginPath(); ctx.moveTo(d.x-r, d.y-r); ctx.lineTo(d.x+r, d.y+r); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(d.x+r, d.y-r); ctx.lineTo(d.x-r, d.y+r); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+  });
+
+  // ── drag em curso ──
+  if(drag && drag.ox !== null){
+    ctx.beginPath();
+    ctx.arc(drag.ox, drag.oy, 6, 0, Math.PI*2);
+    ctx.fillStyle = '#f59e0b';
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    if(drag.cx !== undefined){
+      ctx.beginPath();
+      ctx.moveTo(drag.ox, drag.oy);
+      ctx.lineTo(drag.cx, drag.cy);
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5,4]);
+      ctx.globalAlpha = 0.7;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    }
+  }
+}
+
+// ── HEATMAP ──────────────────────────────────────────────
+// Usa o mesmo layout de sqCanvasMetrics (duas quadras lado a lado)
+// e respeita SQ.flipped para posicionar o mapa no lado correto
+function drawHeatmap(canvas, serves){
+  const ctx = canvas.getContext('2d');
+  const m   = sqCanvasMetrics(canvas);
+  const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+  ctx.clearRect(0, 0, m.W, m.H);
+
+  // ── paleta ──
+  const bgColor    = dark ? '#0f172a'        : '#f0f9ff';
+  const courtColor = dark ? '#1a3a5c'        : '#dbeafe';
+  const courtServ  = dark ? '#162d47'        : '#e0f0ff'; // quadra sacador (mais escura)
+  const lineColor  = dark ? '#60a5fa'        : '#2563eb';
+  const lineAlpha  = dark ? 0.85             : 0.9;
+  const netColor   = dark ? '#f59e0b'        : '#d97706';
+  const atkColor   = dark ? 'rgba(96,165,250,.5)'  : 'rgba(37,99,235,.4)';
+  const midColor   = dark ? 'rgba(96,165,250,.15)' : 'rgba(37,99,235,.12)';
+  const labelColor = dark ? '#94a3b8'        : '#475569';
+  const outColor   = dark ? 'rgba(239,68,68,.06)'  : 'rgba(220,38,38,.05)';
+  const outBorder  = dark ? 'rgba(239,68,68,.18)'  : 'rgba(220,38,38,.15)';
+  const outText    = dark ? 'rgba(239,68,68,.35)'  : 'rgba(185,28,28,.3)';
+
+  // ── fundo "fora" ──
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0,0,m.W,m.H);
+  ctx.fillStyle = outColor;
+  ctx.fillRect(0,0,m.W,m.H);
+  ctx.strokeStyle = outBorder; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+  ctx.strokeRect(2,2,m.W-4,m.H-4);
+  ctx.setLineDash([]);
+  ctx.fillStyle = outText;
+  ctx.font = `bold ${Math.max(8,m.mx*0.28)}px Inter, sans-serif`;
+  ctx.textAlign='center';
+  ctx.fillText('FORA', m.mx/2, m.H/2);
+  ctx.fillText('FORA', m.W-m.mx/2, m.H/2);
+  ctx.fillText('FORA', m.W/2, m.myT*0.55);
+  ctx.fillText('FORA', m.W/2, m.H-(m.myB||m.my)*0.18);
+
+  // ── determina qual quadra é destino (adversário recebe) ──
+  // flipped=false: meu time saca da ESQUERDA → destino na quadra B (direita)
+  // flipped=true : meu time saca da DIREITA  → destino na quadra A (esquerda)
+  const myTeam  = S.teamA||'Seu Time';
+  const advTeam = S.teamB||'Adversário';
+
+  // quadra sacador (meu time)
+  const sX = SQ.flipped ? m.bX : m.aX;
+  const sY = SQ.flipped ? m.bY : m.aY;
+  const sW = SQ.flipped ? m.bW : m.aW;
+  const sH = SQ.flipped ? m.bH : m.aH;
+  const sIsLeft = !SQ.flipped; // saca da esquerda?
+
+  // quadra destino (adversário)
+  const dX = SQ.flipped ? m.aX : m.bX;
+  const dY = SQ.flipped ? m.aY : m.bY;
+  const dW = SQ.flipped ? m.aW : m.bW;
+  const dH = SQ.flipped ? m.aH : m.bH;
+
+  // ── helper: desenha meia-quadra ──
+  function drawHalf(x,y,w,h,label,isLeft,isServe){
+    ctx.fillStyle = isServe ? courtServ : courtColor;
+    ctx.fillRect(x,y,w,h);
+    ctx.strokeStyle = lineColor; ctx.globalAlpha=lineAlpha; ctx.lineWidth=2;
+    ctx.strokeRect(x,y,w,h); ctx.globalAlpha=1;
+
+    // linha 3m
+    const atkX = isLeft ? x+w*(2/3) : x+w*(1/3);
+    ctx.strokeStyle=atkColor; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(atkX,y);ctx.lineTo(atkX,y+h);ctx.stroke();
+    ctx.setLineDash([]);
+    const fs3 = Math.max(7,Math.min(10,h*0.07));
+    ctx.fillStyle=atkColor; ctx.font=`${fs3}px Inter,sans-serif`;
+    ctx.textAlign='center'; ctx.fillText('3m',atkX,y+9);
+
+    // zonas horizontais
+    [1,2].forEach(i=>{
+      ctx.strokeStyle=midColor;ctx.lineWidth=0.6;
+      ctx.beginPath();ctx.moveTo(x,y+h*(i/3));ctx.lineTo(x+w,y+h*(i/3));ctx.stroke();
+    });
+    ctx.strokeStyle=midColor;ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(x+w/2,y);ctx.lineTo(x+w/2,y+h);ctx.stroke();
+
+    // label
+    const fsL = Math.max(9,Math.min(13,m.lh*0.52));
+    ctx.fillStyle = isServe
+      ? (dark?'rgba(148,163,184,.5)':'rgba(71,85,105,.5)')
+      : labelColor;
+    ctx.font=`bold ${fsL}px Inter,sans-serif`;
+    ctx.textAlign='center';
+    ctx.fillText(label, x+w/2, y-4);
+  }
+
+  drawHalf(sX,sY,sW,sH, myTeam+(SQ.flipped?' SACA →':' ← SACA'), sIsLeft, true);
+  drawHalf(dX,dY,dW,dH, advTeam+' (destino)', !sIsLeft, false);
+
+  // ── rede ──
+  ctx.fillStyle=netColor; ctx.globalAlpha=0.85;
+  ctx.fillRect(m.netX,m.netY,m.netW,m.netH); ctx.globalAlpha=1;
+  ctx.strokeStyle=netColor; ctx.lineWidth=0.6;
+  for(let i=0;i<=10;i++){
+    const ry=m.netY+(m.netH/10)*i;
+    ctx.globalAlpha=0.3;
+    ctx.beginPath();ctx.moveTo(m.netX,ry);ctx.lineTo(m.netX+m.netW,ry);ctx.stroke();
+  }
+  ctx.globalAlpha=0.85;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(m.netX+m.netW/2,m.netY);ctx.lineTo(m.netX+m.netW/2,m.netY+m.netH);ctx.stroke();
+  ctx.globalAlpha=1;
+  ctx.save();
+  ctx.translate(m.netX+m.netW/2, m.netY+m.netH/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillStyle=netColor;
+  ctx.font=`bold ${Math.max(7,Math.min(11,m.netW*1.8))}px Inter,sans-serif`;
+  ctx.textAlign='center'; ctx.fillText('REDE',0,4);
+  ctx.restore();
+
+  // ── heatmap de densidade na quadra destino ──
+  const inside  = serves.filter(sv => sv.dx>=0&&sv.dx<=1&&sv.dy>=0&&sv.dy<=1);
+  const outside = serves.filter(sv => sv.dx<0||sv.dx>1||sv.dy<0||sv.dy>1);
+
+  if(inside.length>0){
+    // blobs de calor
+    inside.forEach(sv=>{
+      const cx = dX + sv.dx*dW;
+      const cy = dY + sv.dy*dH;
+      const r  = Math.max(dW,dH)*0.13;
+      const a  = Math.min(0.4, 0.6/inside.length+0.12);
+      const g  = ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+      g.addColorStop(0,  `rgba(239,68,68,${a*2.2})`);
+      g.addColorStop(0.4,`rgba(251,146,60,${a})`);
+      g.addColorStop(1,  'rgba(239,68,68,0)');
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+    });
+
+    // pontos individuais coloridos por resultado
+    inside.forEach(sv=>{
+      const cx = dX + sv.dx*dW;
+      const cy = dY + sv.dy*dH;
+      const col = SQ_COLORS[sv.result]||SQ_COLORS.jogo;
+      ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);
+      ctx.fillStyle=col.fill; ctx.strokeStyle=col.stroke;
+      ctx.lineWidth=1.5; ctx.fill(); ctx.stroke();
+    });
+  }
+
+  // pontos fora: X vermelho na posição real dentro do canvas
+  outside.forEach(sv=>{
+    // posição raw: sv.dx/dy estão normalizados relativos à quadra destino
+    // mas com valores fora de [0,1] — projetar no canvas
+    const cx = dX + sv.dx*dW;
+    const cy = dY + sv.dy*dH;
+    // clamp para dentro do canvas com margem
+    const px2 = Math.max(6, Math.min(m.W-6, cx));
+    const py2 = Math.max(6, Math.min(m.H-6, cy));
+    const r=5;
+    ctx.strokeStyle='#ef4444'; ctx.lineWidth=2; ctx.globalAlpha=0.8;
+    ctx.beginPath();ctx.moveTo(px2-r,py2-r);ctx.lineTo(px2+r,py2+r);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(px2+r,py2-r);ctx.lineTo(px2-r,py2+r);ctx.stroke();
+    ctx.globalAlpha=1;
+  });
+
+  // contador fora
+  if(outside.length>0){
+    const bx=dX+dW-74, by=dY+6;
+    ctx.fillStyle=dark?'rgba(239,68,68,.18)':'rgba(239,68,68,.12)';
+    ctx.beginPath();ctx.roundRect(bx,by,70,18,4);ctx.fill();
+    ctx.fillStyle=dark?'#fca5a5':'#b91c1c';
+    ctx.font=`bold 10px Inter,sans-serif`;
+    ctx.textAlign='center';
+    ctx.fillText(`✗ ${outside.length} fora`,bx+35,by+12);
+  }
+
+  // ── legenda no rodapé ──
+  const ly = m.H - (m.myB||m.my)*0.55;
+  const entries=[
+    {col:'#22c55e',label:'Ace'},
+    {col:'#3b82f6',label:'Em jogo'},
+    {col:'#ef4444',label:'Erro/Rede'},
+    {col:'#ef4444',label:`${outside.length} fora`,x:true},
+  ];
+  let lx = m.aX;
+  const fs = Math.max(9,Math.min(11,m.W*0.028));
+  entries.forEach(e=>{
+    ctx.beginPath();ctx.arc(lx+5,ly,5,0,Math.PI*2);
+    ctx.fillStyle=e.col;ctx.globalAlpha=e.x?0.5:0.9;ctx.fill();ctx.globalAlpha=1;
+    ctx.fillStyle=labelColor;ctx.font=`${fs}px Inter,sans-serif`;
+    ctx.textAlign='left';ctx.fillText(e.label,lx+13,ly+4);
+    lx+=13+ctx.measureText(e.label).width+14;
+  });
+}
+
+// ── INICIALIZA CANVAS ─────────────────────────────────────
+function initCourtCanvas(){
+  const canvas = document.getElementById('court-canvas');
+  if(!canvas) return;
+
+  function resize(){
+    const wrap = canvas.parentElement;
+    const W = wrap.clientWidth;
+    // Espaço disponível = viewport - topbar - tabs - controles (players+botões) - gaps
+    const vh = window.innerHeight;
+    const topbar   = document.querySelector('#s-saque .topbar');
+    const tabs     = document.querySelector('#s-saque .home-tabs');
+    const controls = wrap.previousElementSibling;
+    const usedH = (topbar   ? topbar.offsetHeight   : 52)
+                + (tabs     ? tabs.offsetHeight     : 44)
+                + (controls ? controls.offsetHeight : 86)
+                + 16; // gaps/padding
+    // altura ideal: quadra horizontal tem ratio ~0.50 da largura
+    // mas nunca ultrapassa o espaço disponível
+    const ideal = Math.round(W * 0.52);
+    const avail = Math.max(140, vh - usedH);
+    const H = Math.min(ideal, avail);
+    canvas.width  = W;
+    canvas.height = H;
+    drawCourt(canvas, sqFilteredServes(), SQ.drag);
+  }
+
+  // events — mouse
+  canvas.addEventListener('mousedown', e => {
+    const p = sqCanvasPoint(canvas, e.clientX, e.clientY);
+    SQ.drag = {ox: p.x, oy: p.y};
+    drawCourt(canvas, sqFilteredServes(), SQ.drag);
+  });
+  canvas.addEventListener('mousemove', e => {
+    if(!SQ.drag) return;
+    const p = sqCanvasPoint(canvas, e.clientX, e.clientY);
+    SQ.drag.cx = p.x; SQ.drag.cy = p.y;
+    drawCourt(canvas, sqFilteredServes(), SQ.drag);
+  });
+  canvas.addEventListener('mouseup', e => {
+    if(!SQ.drag) return;
+    const p = sqCanvasPoint(canvas, e.clientX, e.clientY);
+    sqRegisterServe(canvas, SQ.drag.ox, SQ.drag.oy, p.x, p.y);
+    SQ.drag = null;
+  });
+  canvas.addEventListener('mouseleave', () => { SQ.drag = null; drawCourt(canvas, sqFilteredServes(), null); });
+
+  // events — touch
+  canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    const p = sqCanvasPoint(canvas, t.clientX, t.clientY);
+    SQ.drag = {ox: p.x, oy: p.y};
+    drawCourt(canvas, sqFilteredServes(), SQ.drag);
+  }, {passive:false});
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if(!SQ.drag) return;
+    const t = e.touches[0];
+    const p = sqCanvasPoint(canvas, t.clientX, t.clientY);
+    SQ.drag.cx = p.x; SQ.drag.cy = p.y;
+    drawCourt(canvas, sqFilteredServes(), SQ.drag);
+  }, {passive:false});
+  canvas.addEventListener('touchend', e => {
+    e.preventDefault();
+    if(!SQ.drag) return;
+    const t = e.changedTouches[0];
+    const p = sqCanvasPoint(canvas, t.clientX, t.clientY);
+    sqRegisterServe(canvas, SQ.drag.ox, SQ.drag.oy, p.x, p.y);
+    SQ.drag = null;
+  }, {passive:false});
+
+  resize();
+  window.addEventListener('resize', resize);
+}
+
+function initHeatCanvas(){
+  const canvas = document.getElementById('heatmap-canvas');
+  if(!canvas) return;
+  function resize(){
+    const courtCanvas = document.getElementById('court-canvas');
+    const W = canvas.parentElement.clientWidth;
+    // mesmo tamanho que a quadra de registro
+    const H = courtCanvas && courtCanvas.height > 0
+      ? Math.round(courtCanvas.height * (W / courtCanvas.width))
+      : Math.round(W * 0.52);
+    canvas.width = W;
+    canvas.height = H;
+    drawHeatmapFiltered();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+}
+
+// ── REGISTRA SAQUE ────────────────────────────────────────
+function sqRegisterServe(canvas, ox, oy, dx, dy){
+  if(!SQ.selPlayer){ toast('Selecione o sacador'); return; }
+
+  const m = sqCanvasMetrics(canvas);
+
+  // origem normalizada (relativa à quadra A)
+  const no = sqNormOrigin(canvas, ox, oy);
+  // destino normalizado (relativo à quadra B)
+  const nd = sqNormDest(canvas, dx, dy);
+
+  const p = S.players.find(p => p.num === SQ.selPlayer);
+  const sv = {
+    id: Date.now(),
+    set: S.currentSet,
+    playerNum: p.num,
+    playerName: p.name,
+    ox: Math.max(-0.2, Math.min(1.2, no.nx)),
+    oy: Math.max(-0.2, Math.min(1.2, no.ny)),
+    dx: Math.max(-0.2, Math.min(1.2, nd.nx)),
+    dy: Math.max(-0.2, Math.min(1.2, nd.ny)),
+    inCourt: nd.inCourt,
+    result: SQ.result,
+    flipped: SQ.flipped,
+  };
+  SQ.serves.unshift(sv);
+  saveSaqueData();
+
+  drawCourt(canvas, sqFilteredServes(), null);
+  renderSaqueLog();
+  renderSaqueCount();
+  toast(sv.inCourt ? '✓ Saque registrado' : '✗ Fora da quadra');
+}
+
+function sqFilteredServes(){
+  return SQ.serves.filter(sv => sv.set === S.currentSet);
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderSaquePlayerGrid(){
+  document.getElementById('saque-player-grid').innerHTML = S.players.map(p => `
+    <div class="saque-p-card${SQ.selPlayer===p.num?' selected':''}" onclick="setSaquePlayer('${p.num}')">
+      <div class="spnum">${p.num}</div>
+      <div class="spname">${p.name}</div>
+    </div>`).join('');
+}
+
+function setSaquePlayer(num){
+  SQ.selPlayer = num;
+  renderSaquePlayerGrid();
+}
+
+function setSaqueResult(r){
+  SQ.result = r;
+  ['ace','jogo','err'].forEach(k => {
+    document.getElementById('rt-'+k).classList.toggle('active', k===r);
+  });
+}
+
+function renderSaqueLog(){
+  const el = document.getElementById('saque-log');
+  const serves = sqFilteredServes();
+  document.getElementById('saque-count').textContent = serves.length + ' saque' + (serves.length!==1?'s':'');
+  if(!serves.length){ el.innerHTML='<div class="empty">Nenhum saque registrado</div>'; return; }
+  const labels = {ace:'Ace', jogo:'Em jogo', err:'Erro/Rede'};
+  el.innerHTML = serves.slice(0,40).map(sv => `
+    <div class="saque-log-item">
+      <span class="log-pill ${sv.result==='ace'?'pt':sv.result==='err'?'err':'neu'}">#${sv.playerNum}</span>
+      <span style="flex:1;font-size:12px;color:var(--text2)">${sv.playerName}</span>
+      <span style="font-size:11px;font-weight:500;color:${sv.result==='ace'?'var(--green-t)':sv.result==='err'?'var(--red-t)':'var(--sky-t)'}">${labels[sv.result]||sv.result}</span>
+      <span style="font-size:10px;color:var(--text3);margin-left:4px">${sv.inCourt?'dentro':'fora'}</span>
+      <button class="log-undo" onclick="sqUndo(${sv.id})">desfazer</button>
+    </div>`).join('');
+}
+
+function renderSaqueCount(){
+  const serves = sqFilteredServes();
+  document.getElementById('saque-count').textContent = serves.length + ' saque' + (serves.length!==1?'s':'');
+}
+
+function sqUndo(id){
+  SQ.serves = SQ.serves.filter(sv => sv.id !== id);
+  saveSaqueData();
+  const canvas = document.getElementById('court-canvas');
+  if(canvas) drawCourt(canvas, sqFilteredServes(), null);
+  renderSaqueLog();
+  renderSaqueCount();
+}
+
+// ── HEATMAP TAB ───────────────────────────────────────────
+function renderHeatTabs(){
+  const players = [...new Map(SQ.serves.map(sv=>[sv.playerNum,sv])).values()];
+  const tabs = [{num:'all', name:'Geral'}, ...players.map(sv=>({num:sv.playerNum, name:sv.playerName}))];
+  document.getElementById('heat-player-tabs').innerHTML = tabs.map(t => `
+    <button class="heat-tab${SQ.heatPlayer===t.num?' active':''}" onclick="setHeatPlayer('${t.num}')">${t.num==='all'?'🌐 Geral':'#'+t.num+' '+t.name}</button>`
+  ).join('');
+}
+
+function setHeatPlayer(num){
+  SQ.heatPlayer = num;
+  renderHeatTabs();
+  drawHeatmapFiltered();
+  renderHeatStats();
+}
+
+function drawHeatmapFiltered(){
+  const canvas = document.getElementById('heatmap-canvas');
+  if(!canvas) return;
+  const serves = SQ.heatPlayer === 'all'
+    ? SQ.serves
+    : SQ.serves.filter(sv => sv.playerNum === SQ.heatPlayer);
+  drawHeatmap(canvas, serves);
+}
+
+function renderHeatStats(){
+  const serves = SQ.heatPlayer === 'all'
+    ? SQ.serves
+    : SQ.serves.filter(sv => sv.playerNum === SQ.heatPlayer);
+
+  const title = SQ.heatPlayer === 'all'
+    ? 'Estatísticas Gerais'
+    : 'Estatísticas — #'+SQ.heatPlayer;
+  document.getElementById('heat-stats-title').textContent = title;
+
+  if(!serves.length){
+    document.getElementById('heat-stats-body').innerHTML = '<div class="empty">Sem dados</div>';
+    return;
+  }
+  const total = serves.length;
+  const aces  = serves.filter(sv=>sv.result==='ace').length;
+  const erros = serves.filter(sv=>sv.result==='err').length;
+  const jogo  = serves.filter(sv=>sv.result==='jogo').length;
+  const dentro= serves.filter(sv=>sv.inCourt).length;
+  const fora  = total - dentro;
+  const effAce= Math.round(aces/total*100);
+  const effErr= Math.round(erros/total*100);
+
+  document.getElementById('heat-stats-body').innerHTML = `
+    <div class="saque-stat-row"><span>Total de saques</span><span class="saque-stat-val">${total}</span></div>
+    <div class="saque-stat-row"><span>🎯 Ace</span><span class="saque-stat-val" style="color:var(--green-t)">${aces} <small style="font-weight:400;color:var(--text3)">(${effAce}%)</small></span></div>
+    <div class="saque-stat-row"><span>↗ Em jogo</span><span class="saque-stat-val" style="color:var(--sky-t)">${jogo} <small style="font-weight:400;color:var(--text3)">(${Math.round(jogo/total*100)}%)</small></span></div>
+    <div class="saque-stat-row"><span>✗ Erro/Rede</span><span class="saque-stat-val" style="color:var(--red-t)">${erros} <small style="font-weight:400;color:var(--text3)">(${effErr}%)</small></span></div>
+    <div class="saque-stat-row"><span>Dentro da quadra</span><span class="saque-stat-val">${dentro}</span></div>
+    <div class="saque-stat-row"><span>Fora / Rede</span><span class="saque-stat-val" style="color:var(--red-t)">${fora}</span></div>
+  `;
+}
+
+// ── TABS DA TELA SAQUE ────────────────────────────────────
+function switchSaqueTab(tab){
+  document.getElementById('saque-reg').style.display  = tab==='reg'  ? 'block' : 'none';
+  document.getElementById('saque-heat').style.display = tab==='heat' ? 'block' : 'none';
+  document.getElementById('stab-reg').classList.toggle('active',  tab==='reg');
+  document.getElementById('stab-heat').classList.toggle('active', tab==='heat');
+
+  if(tab==='heat'){
+    renderHeatTabs();
+    setTimeout(()=>{ initHeatCanvas(); drawHeatmapFiltered(); renderHeatStats(); }, 50);
+  }
+}
+
+// ── ABRIR TELA SAQUE ──────────────────────────────────────
+function showSaqueScreen(){
+  loadSaqueData();
+  document.getElementById('saque-sub').textContent = S.matchName || (S.teamA + ' × ' + S.teamB);
+  switchSaqueTab('reg');
+  setSaqueResult(SQ.result);
+  renderSaquePlayerGrid();
+  renderSaqueLog();
+  renderSaqueCount();
+  // restaura label do botão inverter
+  const btn = document.getElementById('btn-flip-court');
+  if(btn) btn.textContent = SQ.flipped ? '← Lado direito' : '→ Lado esquerdo';
+  show('s-saque');
+  setTimeout(()=>{ initCourtCanvas(); }, 80);
+}
+
+// ── PERSISTÊNCIA ──────────────────────────────────────────
+function flipCourt(){
+  SQ.flipped = !SQ.flipped;
+  const btn = document.getElementById('btn-flip-court');
+  if(btn) btn.textContent = SQ.flipped ? '← Lado direito' : '→ Lado esquerdo';
+  const canvas = document.getElementById('court-canvas');
+  if(canvas) drawCourt(canvas, sqFilteredServes(), null);
+  // redesenha heatmap se estiver visível
+  const hc = document.getElementById('heatmap-canvas');
+  if(hc && hc.offsetParent) drawHeatmapFiltered();
+  toast(SQ.flipped
+    ? (S.teamA||'Seu time') + ' saca da DIREITA'
+    : (S.teamA||'Seu time') + ' saca da ESQUERDA');
+}
+
+function saveSaqueData(){
+  const key = 'sv_serves_' + S.matchId;
+  localStorage.setItem(key, JSON.stringify(SQ.serves));
+}
+function loadSaqueData(){
+  const key = 'sv_serves_' + S.matchId;
+  try { SQ.serves = JSON.parse(localStorage.getItem(key)||'[]'); }
+  catch(e){ SQ.serves = []; }
+}
+
 </script>
 </body>
 </html>
